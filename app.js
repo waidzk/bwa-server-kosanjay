@@ -9,7 +9,7 @@ const flash = require('connect-flash');
 
 // import mongoose
 const mongoose = require('mongoose');
-const db_mongoose = "mongodb://kosanmin:kosanmin@127.0.0.1:27017/kosanjay?retryWrites=true&w=majority"
+const db_mongoose = "mongodb+srv://waidzk:kosanmin@cluster0.ag4km3f.mongodb.net/db_kosanjay?retryWrites=true&w=majority"
 mongoose.connect(db_mongoose, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

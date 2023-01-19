@@ -62,9 +62,9 @@ module.exports = {
 
   viewDashboard: async (req, res) => {
     try {
-      const member = await Member.find()
-      const booking = await Booking.find()
-      const item = await Item.find()
+      const member = await Member.find();
+      const booking = await Booking.find();
+      const item = await Item.find();
       res.render("admin/dashboard/view_dashboard", {
         title: "KosanJay | Dashboard",
         user: req.session.user,
@@ -224,6 +224,7 @@ module.exports = {
       const item = await Item.find()
         .populate({ path: "imageId", select: "id imageUrl" })
         .populate({ path: "categoryId", select: "id name" });
+        console.log(item)
       const category = await Category.find();
       const alertMessage = req.flash("alertMessage");
       const alertStatus = req.flash("alertStatus");
@@ -298,6 +299,7 @@ module.exports = {
     }
   },
   showEditItem: async (req, res) => {
+    console.log(req)
     try {
       const { id } = req.params;
       const item = await Item.findOne({ _id: id })
@@ -330,16 +332,11 @@ module.exports = {
   editItem: async (req, res) => {
     try {
       const { id } = req.params;
-      const { title, price, city, categoryId, about } = req.body;
+      const { categoryId, title, price, city, about } = req.body;
       const item = await Item.findOne({ _id: id })
-        .populate({
-          path: "imageId",
-          select: "id imageUrl",
-        })
-        .populate({
-          path: "categoryId",
-          select: "id name",
-        });
+        .populate({ path: 'imageId', select: 'id imageUrl' })
+        .populate({ path: 'categoryId', select: 'id name' });
+
       if (req.files.length > 0) {
         for (let i = 0; i < item.imageId.length; i++) {
           const imageUpdate = await Image.findOne({ _id: item.imageId[i]._id });
@@ -353,9 +350,9 @@ module.exports = {
         item.description = about;
         item.categoryId = categoryId;
         await item.save();
-        req.flash("alertMessage", "Success to update item");
-        req.flash("alertStatus", "success");
-        res.redirect("/admin/item");
+        req.flash('alertMessage', 'Success update Item');
+        req.flash('alertStatus', 'success');
+        res.redirect('/admin/item');
       } else {
         item.title = title;
         item.price = price;
@@ -363,9 +360,9 @@ module.exports = {
         item.description = about;
         item.categoryId = categoryId;
         await item.save();
-        req.flash("alertMessage", "Success to update item");
-        req.flash("alertStatus", "success");
-        res.redirect("/admin/item");
+        req.flash('alertMessage', 'Success update Item');
+        req.flash('alertStatus', 'success');
+        res.redirect('/admin/item');
       }
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);

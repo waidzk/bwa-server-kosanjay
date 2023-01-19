@@ -224,7 +224,6 @@ module.exports = {
       const item = await Item.find()
         .populate({ path: "imageId", select: "id imageUrl" })
         .populate({ path: "categoryId", select: "id name" });
-        console.log(item)
       const category = await Category.find();
       const alertMessage = req.flash("alertMessage");
       const alertStatus = req.flash("alertStatus");
@@ -299,7 +298,6 @@ module.exports = {
     }
   },
   showEditItem: async (req, res) => {
-    console.log(req)
     try {
       const { id } = req.params;
       const item = await Item.findOne({ _id: id })
@@ -423,16 +421,16 @@ module.exports = {
   addFeature: async (req, res) => {
     const { name, qty, itemId } = req.body;
     try {
-      if (!req.file) {
-        req.flash("alertMessage", "Image not found");
-        req.flash("alertStatus", "danger");
-        res.redirect(`/admin/item/show-detail-item/${itemId}`);
-      }
+      // if (!req.file) {
+      //   req.flash("alertMessage", "Image not found");
+      //   req.flash("alertStatus", "danger");
+      //   res.redirect(`/admin/item/show-detail-item/${itemId}`);
+      // }
       const feature = await Feature.create({
         name,
         qty,
         itemId,
-        imageUrl: `images/${req.file.filename}`,
+        // imageUrl: `images/${req.file.filename}`,
       });
       const item = await Item.findOne({ _id: itemId });
       item.featureId.push({ _id: feature._id });
@@ -484,7 +482,7 @@ module.exports = {
           await item.save();
         }
       }
-      await fs.unlink(path.join(`public/${feature.imageUrl}`));
+      // await fs.unlink(path.join(`public/${feature.imageUrl}`));
       await feature.remove();
       req.flash("alertMessage", "Success to delete feature");
       req.flash("alertStatus", "success");
@@ -598,7 +596,6 @@ module.exports = {
         .populate("memberId")
         .populate("bankId");
 
-      console.log(booking);
       res.render("admin/booking/show_detail_booking", {
         title: "KosanJay | Detail Booking",
         user: req.session.user,

@@ -28,8 +28,8 @@ const bookingSchema = new mongoose.Schema({
       type: Number,
       required: true,
     },
-    duration: {
-      type: Number,
+    meetDate: {
+      type: Date,
       required: true,
     },
   },
